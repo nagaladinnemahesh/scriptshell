@@ -51,7 +51,7 @@ php -r "if (hash_file('SHA384', '/tmp/composer-setup.php') === '$HASH') { echo '
 sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 # Test installation
-composer
+composer --no-interaction
 
 # Update package manager cache
 sudo apt update
@@ -83,12 +83,8 @@ git clone https://github.com/nagaladinnemahesh/laraveldeploy.git
 # Navigate into the Laravel project directory
 cd laraveldeploy
 
-
 # Install Laravel dependencies
-composer install
-
-
-
+composer install --no-interaction
 
 sudo cp .env.example .env
 
@@ -105,16 +101,9 @@ sed -i "s|^DB_USERNAME=.*|DB_USERNAME=$DB_USERNAME|" .env
 sed -i "s|^DB_PASSWORD=.*|DB_PASSWORD=$DB_PASSWORD|" .env
 
 # Change ownership of storage and bootstrap/cache directories
-# sudo chown -R www-data:www-data storage bootstrap/cache
-# sudo chown -R $USER:www-data storage bootstrap/cache
-# sudo chmod -R 775 storage bootstrap/cache
-# sudo chown -R www-data.www-data /var/www/laravel/laraveldeploy/storage
-# sudo chown -R www-data.www-data /var/www/laravel/laraveldeploy/bootstrap/cache
-
 sudo chown -R www-data:www-data /var/www/laravel/laraveldeploy/storage
 sudo chown -R www-data:www-data /var/www/laravel/laraveldeploy/bootstrap/cache
 sudo chmod -R 775 /var/www/laravel/laraveldeploy/storage
-
 
 # Create a new Nginx server block configuration file
 sudo tee /etc/nginx/sites-available/laraveldeploy >/dev/null <<EOF
@@ -166,3 +155,5 @@ sudo systemctl reload nginx
 php artisan key:generate
 
 sudo systemctl reload nginx
+
+echo "Setup completed successfully!"
