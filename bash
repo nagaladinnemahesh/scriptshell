@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Get server IP address
+SERVER_IP=$(curl -sS ifconfig.me)
+
 # Update package lists
 sudo apt update
 sudo apt install nginx -y
@@ -89,7 +92,7 @@ composer install --no-interaction
 sudo cp .env.example .env
 
 # Define variables
-APP_URL="http://3.86.235.189"
+APP_URL="http://$SERVER_IP"
 DB_DATABASE="laravel"
 DB_USERNAME="mahesh"
 DB_PASSWORD="Mahesh@123"
@@ -109,7 +112,7 @@ sudo chmod -R 775 /var/www/laravel/laraveldeploy/storage
 sudo tee /etc/nginx/sites-available/laraveldeploy >/dev/null <<EOF
 server {
     listen 80;
-    server_name 3.86.235.189; # Change this to your domain name or IP address
+    server_name $SERVER_IP; # Use the dynamically fetched IP address
     root /var/www/laravel/laraveldeploy/public;
 
     add_header X-Frame-Options "SAMEORIGIN";
